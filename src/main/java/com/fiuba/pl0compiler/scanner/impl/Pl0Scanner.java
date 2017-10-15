@@ -435,7 +435,7 @@ public class Pl0Scanner {
    * <b>cannot</b> be reused (internal buffer is discarded and lost).
    * Lexical state is set to <tt>ZZ_INITIAL</tt>.
    *
-   * Internal scan buffer is resized down to its initial length, if it has grown.
+   * Internal getNewToken buffer is resized down to its initial length, if it has grown.
    *
    * @param reader   the new input stream 
    */

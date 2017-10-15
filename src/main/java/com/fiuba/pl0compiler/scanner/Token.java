@@ -12,7 +12,7 @@ public class Token {
         this.value = value;
     }
 
-    public TokenType getTokenType() {
+    public TokenType getType() {
         return tokenType;
     }
 
