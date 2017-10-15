@@ -1,6 +1,6 @@
 package com.fiuba.pl0compiler;
 
-import com.fiuba.pl0compiler.parser.Parser;
+import com.fiuba.pl0compiler.parser.PL0Parser;
 import com.fiuba.pl0compiler.scanner.Scanner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,8 +28,7 @@ public class main {
     }
 
     private static void parse(String file) throws FileNotFoundException {
-        Scanner scanner = new Scanner(file);
-        Parser parser = new Parser(scanner);
-        parser.parse();
+        PL0Parser pl0Parser = new PL0Parser();
+        pl0Parser.parse(file);
     }
 }

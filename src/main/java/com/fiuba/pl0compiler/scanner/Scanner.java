@@ -11,17 +11,19 @@ public class Scanner {
 
     private static final Logger LOG = LoggerFactory.getLogger(Scanner.class);
 
-    private final String filename;
-    private final Pl0Scanner pl0Scanner;
+    private Pl0Scanner pl0Scanner;
 
-    public Scanner(String file) throws FileNotFoundException {
-        this.filename = file;
-        this.pl0Scanner = new Pl0Scanner(new BufferedReader(new FileReader(file)));
+    public void setFileToScan(String file) {
+        try {
+            this.pl0Scanner = new Pl0Scanner(new BufferedReader(new FileReader(file)));
+        } catch (FileNotFoundException e) {
+            throw new ScannerException("File not found " + file);
+        }
     }
 
     public Token readToken() {
         Token token = this.doReadToken();
-        LOG.info("Scanned token: {}", token);
+        LOG.debug("Scanned token: {}", token);
         return token;
     }
 
@@ -51,9 +53,5 @@ public class Scanner {
             LOG.error("An error occurred while reading file", e);
             throw new ScannerException("Unknown error has occurred");
         }
-    }
-
-    public String getFilename() {
-        return filename;
     }
 }
