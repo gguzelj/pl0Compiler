@@ -22,14 +22,18 @@ public class ExpressionParser extends AbstractParser{
     }
 
     public void parse() {
+        this.parse(0,0);
+    }
+
+    public void parse(Integer base, Integer offset) {
         LOG.debug("Parsing EXPRESSION");
         if (EXPRESSION.contains(scanner.getNextTokenType()))
             scanner.readToken();
 
-        PL0Parser.parseTerm();
+        PL0Parser.parseTerm(base, offset);
         while (EXPRESSION.contains(scanner.getNextTokenType())) {
             scanner.readToken();
-            PL0Parser.parseTerm();
+            PL0Parser.parseTerm(base, offset);
         }
         LOG.debug("Parsing EXPRESSION END");
     }

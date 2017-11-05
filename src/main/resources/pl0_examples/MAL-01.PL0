@@ -1,9 +1,9 @@
 VAR BASE, EXPO, RESU;
 
-PROCEDUR POT;
+PROCEDURE POT;
 IF EXPO > 0 THEN
    BEGIN
-        RESU = RESU * BASE;
+        RESU := RESU * BASE;
         EXPO := EXPO - 1;
         CALL POT
    END;

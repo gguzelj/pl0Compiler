@@ -27,21 +27,25 @@ public class ConditionParser extends AbstractParser{
     }
 
     public void parse() {
+        this.parse(0,0);
+    }
+
+    public void parse(Integer base, Integer offset) {
         LOG.debug("Parsing CONDITION");
         if (scanner.getNextTokenType() == TokenType.ODD) {
             scanner.readToken();
-            PL0Parser.parseExpression();
+            PL0Parser.parseExpression(base, offset);
             return;
         }
 
-        PL0Parser.parseExpression();
+        PL0Parser.parseExpression(base, offset);
         if (OPERATIONS.containsKey(scanner.getNextTokenType())) {
             OPERATIONS.get(scanner.getNextTokenType()).run();
         } else {
             throw new ParserException("Unknown token " + scanner.readToken());
         }
 
-        PL0Parser.parseExpression();
+        PL0Parser.parseExpression(base, offset);
         LOG.debug("Parsing CONDITION END");
     }
 

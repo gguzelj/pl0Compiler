@@ -47,7 +47,12 @@ public class Scanner {
 
     private Token doReadToken() {
         try {
-            this.pl0Scanner.scan();
+            TokenType scan = this.pl0Scanner.scan();
+            if (scan == TokenType.NULL) {
+                LOG.error("Invalid type of token " + scan);
+                throw new ScannerException("Invalid type of token " + scan);
+            }
+
             return new Token(pl0Scanner.getS(), pl0Scanner.getCad());
         } catch (IOException e) {
             LOG.error("An error occurred while reading file", e);

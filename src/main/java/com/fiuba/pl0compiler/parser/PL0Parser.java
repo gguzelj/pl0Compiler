@@ -11,12 +11,12 @@ public class PL0Parser {
 
     private static final Scanner scanner;
     private static final AbstractParser programParser;
-    private static final AbstractParser blockParser;
-    private static final AbstractParser statementParser;
-    private static final AbstractParser conditionParser;
-    private static final AbstractParser expressionParser;
-    private static final AbstractParser termParser;
-    private static final AbstractParser factorParser;
+    private static final BlockParser blockParser;
+    private static final StatementParser statementParser;
+    private static final ConditionParser conditionParser;
+    private static final ExpressionParser expressionParser;
+    private static final TermParser termParser;
+    private static final FactorParser factorParser;
 
 
     static {
@@ -41,28 +41,28 @@ public class PL0Parser {
         programParser.parse();
     }
 
-    public static void parseBlock() {
-        blockParser.parse();
+    public static void parseBlock(Integer base) {
+        blockParser.parse(base);
     }
 
-    public static void parseStatement() {
-        statementParser.parse();
+    public static void parseStatement(Integer base, Integer offset) {
+        statementParser.parse(base, offset);
     }
 
-    public static void parseCondition() {
-        conditionParser.parse();
+    public static void parseCondition(Integer base, Integer offset) {
+        conditionParser.parse(base, offset);
     }
 
-    public static void parseExpression() {
-        expressionParser.parse();
+    public static void parseExpression(Integer base, Integer offset) {
+        expressionParser.parse(base, offset);
     }
 
-    public static void parseTerm() {
-        termParser.parse();
+    public static void parseTerm(Integer base, Integer offset) {
+        termParser.parse(base, offset);
     }
 
-    public static void parseFactor() {
-        factorParser.parse();
+    public static void parseFactor(Integer base, Integer offset) {
+        factorParser.parse(base, offset);
     }
 
 }

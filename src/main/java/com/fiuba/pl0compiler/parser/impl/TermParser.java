@@ -15,11 +15,15 @@ public class TermParser extends AbstractParser {
     }
 
     public void parse() {
+        this.parse(0,0);
+    }
+
+    public void parse(Integer base, Integer offset) {
         LOG.debug("Parsing TERM");
-        PL0Parser.parseFactor();
+        PL0Parser.parseFactor(base, offset);
         while(scanner.getNextTokenType() == TokenType.MULTIPLY || scanner.getNextTokenType() == TokenType.DIVIDE) {
             scanner.readToken();
-            PL0Parser.parseFactor();
+            PL0Parser.parseFactor(base, offset);
         }
         LOG.debug("Parsing TERM END");
     }

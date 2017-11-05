@@ -1,0 +1,20 @@
+var X, Y;
+
+procedure INICIAR;
+  const Y = 2, Z=4;
+  procedure ASIGNAR;
+    const x=3;
+    var y;
+    Y := Y;
+
+  procedure BLA;
+    var Z;
+    Z := 2 + X * y + z;
+
+  CALL INICIAR;
+
+begin
+  write ('NUM='); readln (X);
+  call INICIAR;
+  writeln ('NUM*2=',Y*X)
+end.

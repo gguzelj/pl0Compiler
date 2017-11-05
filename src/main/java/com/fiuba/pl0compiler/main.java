@@ -1,7 +1,6 @@
 package com.fiuba.pl0compiler;
 
 import com.fiuba.pl0compiler.parser.PL0Parser;
-import com.fiuba.pl0compiler.scanner.Scanner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,16 +13,7 @@ public class main {
 
     public static void main(String argv[]) throws IOException {
 
-        parse("/home/german/workspace/pl0Compiler/src/main/resources/BIEN-00.PL0");
-        parse("/home/german/workspace/pl0Compiler/src/main/resources/BIEN-01.PL0");
-        parse("/home/german/workspace/pl0Compiler/src/main/resources/BIEN-02.PL0");
-        parse("/home/german/workspace/pl0Compiler/src/main/resources/BIEN-03.PL0");
-        parse("/home/german/workspace/pl0Compiler/src/main/resources/BIEN-04.PL0");
-        parse("/home/german/workspace/pl0Compiler/src/main/resources/BIEN-05.PL0");
-        parse("/home/german/workspace/pl0Compiler/src/main/resources/BIEN-06.PL0");
-        parse("/home/german/workspace/pl0Compiler/src/main/resources/BIEN-07.PL0");
-        parse("/home/german/workspace/pl0Compiler/src/main/resources/BIEN-08.PL0");
-        parse("/home/german/workspace/pl0Compiler/src/main/resources/BIEN-09.PL0");
+        parse("/home/german/workspace/pl0Compiler/src/main/resources/pl0_examples/MAL-01.PL0");
 
     }
 
