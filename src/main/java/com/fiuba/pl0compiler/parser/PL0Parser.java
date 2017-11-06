@@ -2,6 +2,7 @@ package com.fiuba.pl0compiler.parser;
 
 import com.fiuba.pl0compiler.parser.impl.*;
 import com.fiuba.pl0compiler.scanner.Scanner;
+import com.fiuba.pl0compiler.writer.Pl0Writer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,6 +10,7 @@ public class PL0Parser {
 
     private static final Logger LOG = LoggerFactory.getLogger(PL0Parser.class);
 
+    public static final Pl0Writer writer;
     private static final Scanner scanner;
     private static final AbstractParser programParser;
     private static final BlockParser blockParser;
@@ -20,6 +22,7 @@ public class PL0Parser {
 
 
     static {
+        writer = new Pl0Writer();
         scanner = new Scanner();
         programParser = new ProgramParser(scanner);
         blockParser = new BlockParser(scanner);

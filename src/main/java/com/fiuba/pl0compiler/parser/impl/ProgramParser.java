@@ -17,7 +17,7 @@ public class ProgramParser extends AbstractParser {
     public void parse() {
         LOG.debug("Parsing PROGRAM");
         PL0Parser.parseBlock(0);
-        getNextTokenAndAssertTokenType(TokenType.END_OF_PROGRAM);
+        getAndAssertToken(TokenType.END_OF_PROGRAM);
         LOG.debug("Parsing PROGRAM END");
     }
 

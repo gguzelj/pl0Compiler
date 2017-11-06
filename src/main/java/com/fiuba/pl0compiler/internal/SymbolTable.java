@@ -13,6 +13,17 @@ public class SymbolTable {
     private static final Logger LOG = LoggerFactory.getLogger(SymbolTable.class);
     private static final ArrayList<Symbol> symbols = new ArrayList<>();
 
+    public static Integer getConst(String name, Integer base, Integer offset) {
+        for (int i = base+offset-1; i >= 0; i--) {
+            Symbol symbol = SymbolTable.symbols.get(i);
+            if (symbol.getName().equalsIgnoreCase(name)) {
+                return symbol.getValue();
+            }
+        }
+        LOG.error("Const {} expected to exists", name);
+        throw new IllegalStateException("No const with name " + name);
+    }
+
     public static void addConst(String name, String value, Integer base, Integer offset) {
         SymbolTable.checkDefinition(name, base, offset);
         SymbolTable.symbols.add(base+offset, new Symbol(SymbolType.CONST, name, Integer.valueOf(value)));

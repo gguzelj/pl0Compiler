@@ -46,54 +46,54 @@ public class StatementParser extends AbstractParser {
     }
 
     private void parseWriteln(Integer base, Integer offset) {
-        getNextTokenAndAssertTokenType(TokenType.WRITELN);
+        getAndAssertToken(TokenType.WRITELN);
         if (scanner.getNextTokenType() == TokenType.OPEN_PARENTHESIS) {
             this.doWrite(base, offset);
         }
     }
 
     private void parseWrite(Integer base, Integer offset) {
-        getNextTokenAndAssertTokenType(TokenType.WRITE);
+        getAndAssertToken(TokenType.WRITE);
         doWrite(base, offset);
     }
 
     private void parseReadln(Integer base, Integer offset) {
-        getNextTokenAndAssertTokenType(TokenType.READLN);
-        getNextTokenAndAssertTokenType(TokenType.OPEN_PARENTHESIS);
-        Token ident = getNextTokenAndAssertTokenType(TokenType.IDENT);
+        getAndAssertToken(TokenType.READLN);
+        getAndAssertToken(TokenType.OPEN_PARENTHESIS);
+        Token ident = getAndAssertToken(TokenType.IDENT);
         SymbolTable.checkVarExistence(ident.getValue(), base, offset);
 
 
         while (scanner.getNextTokenType() == TokenType.COMMA) {
             scanner.readToken();
-            getNextTokenAndAssertTokenType(TokenType.IDENT);
+            getAndAssertToken(TokenType.IDENT);
         }
-        getNextTokenAndAssertTokenType(TokenType.CLOSE_PARENTHESIS);
+        getAndAssertToken(TokenType.CLOSE_PARENTHESIS);
     }
 
     private void parseAssign(Integer base, Integer offset) {
-        Token ident = getNextTokenAndAssertTokenType(TokenType.IDENT);
+        Token ident = getAndAssertToken(TokenType.IDENT);
         SymbolTable.checkVarExistence(ident.getValue(), base, offset);
-        getNextTokenAndAssertTokenType(TokenType.ASSIGN);
+        getAndAssertToken(TokenType.ASSIGN);
         PL0Parser.parseExpression(base, offset);
     }
 
     private void parseIf(Integer base, Integer offset) {
-        getNextTokenAndAssertTokenType(TokenType.IF);
+        getAndAssertToken(TokenType.IF);
         PL0Parser.parseCondition(base, offset);
-        getNextTokenAndAssertTokenType(TokenType.THEN);
+        getAndAssertToken(TokenType.THEN);
         PL0Parser.parseStatement(base, offset);
     }
 
     private void parseWhile(Integer base, Integer offset) {
-        getNextTokenAndAssertTokenType(TokenType.WHILE);
+        getAndAssertToken(TokenType.WHILE);
         PL0Parser.parseCondition(base, offset);
-        getNextTokenAndAssertTokenType(TokenType.DO);
+        getAndAssertToken(TokenType.DO);
         PL0Parser.parseStatement(base, offset);
     }
 
     private void parseBegin(Integer base, Integer offset) {
-        getNextTokenAndAssertTokenType(TokenType.BEGIN);
+        getAndAssertToken(TokenType.BEGIN);
         do {
             PL0Parser.parseStatement(base, offset);
             scanner.readToken();
@@ -102,27 +102,27 @@ public class StatementParser extends AbstractParser {
     }
 
     private void parseCall(Integer base, Integer offset) {
-        getNextTokenAndAssertTokenType(TokenType.CALL);
-        Token ident = getNextTokenAndAssertTokenType(TokenType.IDENT);
+        getAndAssertToken(TokenType.CALL);
+        Token ident = getAndAssertToken(TokenType.IDENT);
         SymbolTable.checkProcedureExistence(ident.getValue(), base, offset);
     }
 
     private void doWrite(Integer base, Integer offset) {
-        getNextTokenAndAssertTokenType(TokenType.OPEN_PARENTHESIS);
+        getAndAssertToken(TokenType.OPEN_PARENTHESIS);
         if (scanner.getNextTokenType() == TokenType.STRING) {
-            getNextTokenAndAssertTokenType(TokenType.STRING);
+            getAndAssertToken(TokenType.STRING);
         } else {
             PL0Parser.parseExpression(base, offset);
         }
         while (scanner.getNextTokenType() == TokenType.COMMA) {
             scanner.readToken();
             if (scanner.getNextTokenType() == TokenType.STRING) {
-                getNextTokenAndAssertTokenType(TokenType.STRING);
+                getAndAssertToken(TokenType.STRING);
             } else {
                 PL0Parser.parseExpression(base, offset);
             }
         }
-        getNextTokenAndAssertTokenType(TokenType.CLOSE_PARENTHESIS);
+        getAndAssertToken(TokenType.CLOSE_PARENTHESIS);
     }
 
 }

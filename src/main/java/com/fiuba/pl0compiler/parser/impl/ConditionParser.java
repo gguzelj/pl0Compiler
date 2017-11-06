@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 
 public class ConditionParser extends AbstractParser{
@@ -50,22 +49,22 @@ public class ConditionParser extends AbstractParser{
     }
 
     private void parseEqual() {
-        getNextTokenAndAssertTokenType(TokenType.EQUAL);
+        getAndAssertToken(TokenType.EQUAL);
     }
     private void parseDistinct() {
-        getNextTokenAndAssertTokenType(TokenType.DISTINCT);
+        getAndAssertToken(TokenType.DISTINCT);
     }
     private void parseLessThan() {
-        getNextTokenAndAssertTokenType(TokenType.LESS_THAN);
+        getAndAssertToken(TokenType.LESS_THAN);
     }
     private void parseLessOrEqual() {
-        getNextTokenAndAssertTokenType(TokenType.LESS_OR_EQUAL);
+        getAndAssertToken(TokenType.LESS_OR_EQUAL);
     }
     private void parseGreaterThan() {
-        getNextTokenAndAssertTokenType(TokenType.GREATER_THAN);
+        getAndAssertToken(TokenType.GREATER_THAN);
     }
     private void parseGreaterOrEqual() {
-        getNextTokenAndAssertTokenType(TokenType.GREATER_OR_EQUAL);
+        getAndAssertToken(TokenType.GREATER_OR_EQUAL);
     }
 
 }

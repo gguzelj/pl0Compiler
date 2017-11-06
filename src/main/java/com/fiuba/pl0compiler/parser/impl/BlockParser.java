@@ -39,11 +39,11 @@ public class BlockParser extends AbstractParser {
     }
 
     private Integer parseConst(Integer base, Integer offset) {
-        getNextTokenAndAssertTokenType(TokenType.CONST);
+        getAndAssertToken(TokenType.CONST);
         do {
-            Token ident = getNextTokenAndAssertTokenType(TokenType.IDENT);
-            getNextTokenAndAssertTokenType(TokenType.EQUAL);
-            Token value = getNextTokenAndAssertTokenType(TokenType.NUMBER);
+            Token ident = getAndAssertToken(TokenType.IDENT);
+            getAndAssertToken(TokenType.EQUAL);
+            Token value = getAndAssertToken(TokenType.NUMBER);
             SymbolTable.addConst(ident.getValue(), value.getValue(), base, offset++);
         } while (scanner.readToken().getType() == TokenType.COMMA);
 
@@ -52,9 +52,9 @@ public class BlockParser extends AbstractParser {
     }
 
     private Integer parseVar(Integer base, Integer offset) {
-        getNextTokenAndAssertTokenType(TokenType.VAR);
+        getAndAssertToken(TokenType.VAR);
         do {
-            Token ident = getNextTokenAndAssertTokenType(TokenType.IDENT);
+            Token ident = getAndAssertToken(TokenType.IDENT);
             SymbolTable.addVar(ident.getValue(), base, offset++);
         } while (scanner.readToken().getType() == TokenType.COMMA);
         assertTokenType(TokenType.SEMICOLON);
@@ -62,16 +62,16 @@ public class BlockParser extends AbstractParser {
     }
 
     private Integer parseProcedure(Integer base, Integer offset) {
-        getNextTokenAndAssertTokenType(TokenType.PROCEDURE);
+        getAndAssertToken(TokenType.PROCEDURE);
 
-        Token ident = getNextTokenAndAssertTokenType(TokenType.IDENT);
+        Token ident = getAndAssertToken(TokenType.IDENT);
         SymbolTable.addProcedure(ident.getValue(), base, offset++);
-        getNextTokenAndAssertTokenType(TokenType.SEMICOLON);
+        getAndAssertToken(TokenType.SEMICOLON);
 
 
         PL0Parser.parseBlock(base + offset);
 
-        getNextTokenAndAssertTokenType(TokenType.SEMICOLON);
+        getAndAssertToken(TokenType.SEMICOLON);
         return offset;
     }
 

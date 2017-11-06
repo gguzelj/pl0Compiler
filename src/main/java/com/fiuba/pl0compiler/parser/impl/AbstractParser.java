@@ -17,7 +17,7 @@ public abstract class AbstractParser {
 
     public abstract void parse();
 
-    protected Token getNextTokenAndAssertTokenType(TokenType tokenType) {
+    protected Token getAndAssertToken(TokenType tokenType) {
         Token token = this.scanner.readToken();
         this.assertTokenType(tokenType);
         return token;

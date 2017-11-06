@@ -25,15 +25,26 @@ public class FactorParser extends AbstractParser {
         LOG.debug("Parsing FACTOR");
         TokenType type = scanner.getNextTokenType();
         if (type == TokenType.IDENT) {
-            Token ident = getNextTokenAndAssertTokenType(TokenType.IDENT);
+            Token ident = getAndAssertToken(TokenType.IDENT);
             SymbolTable.checkVarOrConstExistence(ident.getValue(), base, offset);
-
+            //Identifier is var or const
+            if (ident.getType() == TokenType.VAR) {
+                //TODO No se tiene que guardar el offset a var??
+                PL0Parser.writer.movEaxEdiOffset(ident.getValue());
+                PL0Parser.writer.pushEax();
+            } else {
+                Integer aConst = SymbolTable.getConst(ident.getValue(), base, offset);
+                PL0Parser.writer.movEaxConstant(aConst);
+                PL0Parser.writer.pushEax();
+            }
         } else if (type == TokenType.NUMBER) {
-            getNextTokenAndAssertTokenType(TokenType.NUMBER);
+            Token number = getAndAssertToken(TokenType.NUMBER);
+            PL0Parser.writer.movEaxConstant(Integer.valueOf(number.getValue()));
+            PL0Parser.writer.pushEax();
         } else if (type == TokenType.OPEN_PARENTHESIS) {
-            getNextTokenAndAssertTokenType(TokenType.OPEN_PARENTHESIS);
+            getAndAssertToken(TokenType.OPEN_PARENTHESIS);
             PL0Parser.parseExpression(base, offset);
-            getNextTokenAndAssertTokenType(TokenType.CLOSE_PARENTHESIS);
+            getAndAssertToken(TokenType.CLOSE_PARENTHESIS);
         } else {
             LOG.error("Invalid option for factor: {}", scanner.getToken());
             throw new ParserException("Invalid option for factor: ");

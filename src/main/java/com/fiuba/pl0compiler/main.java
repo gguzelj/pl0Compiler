@@ -1,6 +1,7 @@
 package com.fiuba.pl0compiler;
 
 import com.fiuba.pl0compiler.parser.PL0Parser;
+import com.fiuba.pl0compiler.writer.Pl0Writer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,7 +14,17 @@ public class main {
 
     public static void main(String argv[]) throws IOException {
 
-        parse("/home/german/workspace/pl0Compiler/src/main/resources/pl0_examples/MAL-01.PL0");
+        Pl0Writer pl0Writer = new Pl0Writer();
+        pl0Writer.flush();
+
+
+        PL0Parser.writer.movEaxEdiOffset("-123");
+        PL0Parser.writer.flush();
+
+
+
+
+        //parse("/home/german/workspace/pl0Compiler/src/main/resources/pl0_examples/MAL-01.PL0");
 
     }
 
