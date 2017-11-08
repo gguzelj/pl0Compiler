@@ -34,17 +34,34 @@ public class ConditionParser extends AbstractParser{
         if (scanner.getNextTokenType() == TokenType.ODD) {
             scanner.readToken();
             PL0Parser.parseExpression(base, offset);
+
+            PL0Parser.writer.popEax();
+            PL0Parser.writer.testAl(0x01);
+            PL0Parser.writer.oddJump();
+            PL0Parser.writer.inconditionalJump();
             return;
         }
 
         PL0Parser.parseExpression(base, offset);
+        TokenType tokenType;
         if (OPERATIONS.containsKey(scanner.getNextTokenType())) {
-            OPERATIONS.get(scanner.getNextTokenType()).run();
+            tokenType = scanner.getNextTokenType();
+            OPERATIONS.get(tokenType).run();
         } else {
             throw new ParserException("Unknown token " + scanner.readToken());
         }
 
         PL0Parser.parseExpression(base, offset);
+
+        PL0Parser.writer.popEax();
+        PL0Parser.writer.popEbx();
+        PL0Parser.writer.cmpEbxEax();
+        PL0Parser.writer.conditionalJump(tokenType);
+        PL0Parser.writer.inconditionalJump();
+
+
+
+
         LOG.debug("Parsing CONDITION END");
     }
 

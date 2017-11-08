@@ -1,27 +1,68 @@
 package com.fiuba.pl0compiler.internal;
 
+import com.fiuba.pl0compiler.parser.PL0Parser;
 import com.fiuba.pl0compiler.parser.ParserException;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
+import static com.fiuba.pl0compiler.internal.SymbolType.CONST;
+import static com.fiuba.pl0compiler.internal.SymbolType.PROCEDURE;
+import static com.fiuba.pl0compiler.internal.SymbolType.VAR;
 import static java.util.Objects.requireNonNull;
 
 public class SymbolTable {
 
     private static final Logger LOG = LoggerFactory.getLogger(SymbolTable.class);
     private static final ArrayList<Symbol> symbols = new ArrayList<>();
+    private static Integer varCounter = 0;
+
+    public static Boolean isVar(String name, Integer base, Integer offset) {
+        return isFromType(VAR, name, base, offset);
+    }
+
+    public static Boolean isConst(String name, Integer base, Integer offset) {
+        return isFromType(CONST, name, base, offset);
+    }
+
+    public static Boolean isProcedure(String name, Integer base, Integer offset) {
+        return isFromType(PROCEDURE, name, base, offset);
+    }
+
+    public static Integer getProcedure(String name, Integer base, Integer offset) {
+        Symbol symbol = getSymbol(name, base, offset)
+                .orElseThrow(() -> new IllegalStateException("No procedure with name " + name));
+        return symbol.getValue();
+    }
+
+    public static Integer getVar(String name, Integer base, Integer offset) {
+        Symbol symbol = getSymbol(name, base, offset)
+                .orElseThrow(() -> new IllegalStateException("No var with name " + name));
+        return symbol.getValue();
+    }
 
     public static Integer getConst(String name, Integer base, Integer offset) {
+        Symbol symbol = getSymbol(name, base, offset)
+                .orElseThrow(() -> new IllegalStateException("No const with name " + name));
+        return symbol.getValue();
+    }
+
+    private static Boolean isFromType(SymbolType type, String name, Integer base, Integer offset) {
+        Optional<SymbolType> symbolType = getSymbol(name, base, offset).map(Symbol::getSymbolType);
+        return symbolType.isPresent() && symbolType.get().equals(type);
+    }
+
+    private static Optional<Symbol> getSymbol(String name, Integer base, Integer offset) {
         for (int i = base+offset-1; i >= 0; i--) {
             Symbol symbol = SymbolTable.symbols.get(i);
             if (symbol.getName().equalsIgnoreCase(name)) {
-                return symbol.getValue();
+                return Optional.of(symbol);
             }
         }
-        LOG.error("Const {} expected to exists", name);
-        throw new IllegalStateException("No const with name " + name);
+        return Optional.empty();
     }
 
     public static void addConst(String name, String value, Integer base, Integer offset) {
@@ -31,16 +72,16 @@ public class SymbolTable {
 
     public static void addVar(String name, Integer base, Integer offset) {
         SymbolTable.checkDefinition(name, base, offset);
-        SymbolTable.symbols.add(base+offset, new Symbol(SymbolType.VAR, name, null));
+        SymbolTable.symbols.add(base+offset, new Symbol(VAR, name, varCounter++));
     }
 
     public static void addProcedure(String name, Integer base, Integer offset) {
         SymbolTable.checkDefinition(name, base, offset);
-        SymbolTable.symbols.add(base+offset, new Symbol(SymbolType.PROCEDURE, name, null));
+        SymbolTable.symbols.add(base+offset, new Symbol(SymbolType.PROCEDURE, name, PL0Parser.writer.getPosition()));
     }
 
     public static void checkVarExistence(String name, Integer base, Integer offset) {
-        doCheck(name, SymbolType.VAR, base, offset);
+        doCheck(name, VAR, base, offset);
     }
 
     public static void checkProcedureExistence(String name, Integer base, Integer offset) {
@@ -101,6 +142,10 @@ public class SymbolTable {
         }
         LOG.error("Unknown identifier: {}", name);
         throw new ParserException("Unknown identifier: " + name);
+    }
+
+    public static int getVarCount() {
+        return varCounter;
     }
 
     public static class Symbol {

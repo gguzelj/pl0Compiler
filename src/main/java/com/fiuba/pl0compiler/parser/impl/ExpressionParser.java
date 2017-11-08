@@ -2,7 +2,9 @@ package com.fiuba.pl0compiler.parser.impl;
 
 import com.fiuba.pl0compiler.parser.PL0Parser;
 import com.fiuba.pl0compiler.scanner.Scanner;
+import com.fiuba.pl0compiler.scanner.Token;
 import com.fiuba.pl0compiler.scanner.TokenType;
+import com.sun.xml.internal.org.jvnet.mimepull.MIMEConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,13 +29,36 @@ public class ExpressionParser extends AbstractParser{
 
     public void parse(Integer base, Integer offset) {
         LOG.debug("Parsing EXPRESSION");
-        if (EXPRESSION.contains(scanner.getNextTokenType()))
+        TokenType type = scanner.getNextTokenType();
+
+        if (EXPRESSION.contains(type)) {
             scanner.readToken();
+        }
 
         PL0Parser.parseTerm(base, offset);
+
+        if (TokenType.SUBTRACT.equals(type)) {
+            PL0Parser.writer.popEax();
+            PL0Parser.writer.negEax();
+            PL0Parser.writer.pushEax();
+        }
+
         while (EXPRESSION.contains(scanner.getNextTokenType())) {
-            scanner.readToken();
+            Token token = scanner.readToken();
             PL0Parser.parseTerm(base, offset);
+
+            if (TokenType.ADD.equals(token.getType())) {
+                PL0Parser.writer.popEax();
+                PL0Parser.writer.popEbx();
+                PL0Parser.writer.addEaxEbx();
+                PL0Parser.writer.pushEax();
+            } else if (TokenType.SUBTRACT.equals(token.getType())) {
+                PL0Parser.writer.popEax();
+                PL0Parser.writer.popEbx();
+                PL0Parser.writer.xchgEaxEbx();
+                PL0Parser.writer.subEaxEbx();
+                PL0Parser.writer.pushEax();
+            }
         }
         LOG.debug("Parsing EXPRESSION END");
     }

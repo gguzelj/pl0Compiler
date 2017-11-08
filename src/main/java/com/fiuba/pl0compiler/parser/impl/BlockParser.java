@@ -24,6 +24,9 @@ public class BlockParser extends AbstractParser {
         LOG.debug("Parsing BLOCK");
         Integer offset = 0;
 
+        PL0Parser.writer.inconditionalJump();
+        Integer positionBefore = PL0Parser.writer.getPosition();
+
         if (this.scanner.getNextTokenType() == TokenType.CONST) {
             offset = this.parseConst(base, offset);
         }
@@ -32,7 +35,12 @@ public class BlockParser extends AbstractParser {
         }
         while (scanner.getNextTokenType() == TokenType.PROCEDURE) {
             offset = this.parseProcedure(base, offset);
+            PL0Parser.writer.ret();
         }
+
+        Integer positionAfter = PL0Parser.writer.getPosition();
+        Integer dist = positionAfter - positionBefore;
+        PL0Parser.writer.fixUp(positionBefore - 4, dist);
 
         PL0Parser.parseStatement(base, offset);
         LOG.debug("Parsing BLOCK END");

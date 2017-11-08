@@ -9,6 +9,8 @@ import com.fiuba.pl0compiler.scanner.TokenType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static com.fiuba.pl0compiler.parser.PL0Parser.*;
+
 public class FactorParser extends AbstractParser {
 
     private static final Logger LOG = LoggerFactory.getLogger(FactorParser.class);
@@ -27,23 +29,24 @@ public class FactorParser extends AbstractParser {
         if (type == TokenType.IDENT) {
             Token ident = getAndAssertToken(TokenType.IDENT);
             SymbolTable.checkVarOrConstExistence(ident.getValue(), base, offset);
+
             //Identifier is var or const
-            if (ident.getType() == TokenType.VAR) {
-                //TODO No se tiene que guardar el offset a var??
-                PL0Parser.writer.movEaxEdiOffset(ident.getValue());
-                PL0Parser.writer.pushEax();
-            } else {
+            if (SymbolTable.isVar(ident.getValue(), base, offset)) {
+                Integer varNumber = SymbolTable.getVar(ident.getValue(), base, offset);
+                writer.movEaxEdiOffset(varNumber);
+                writer.pushEax();
+            } else if (SymbolTable.isConst(ident.getValue(), base, offset)){
                 Integer aConst = SymbolTable.getConst(ident.getValue(), base, offset);
-                PL0Parser.writer.movEaxConstant(aConst);
-                PL0Parser.writer.pushEax();
+                writer.movEaxConstant(aConst);
+                writer.pushEax();
             }
         } else if (type == TokenType.NUMBER) {
             Token number = getAndAssertToken(TokenType.NUMBER);
-            PL0Parser.writer.movEaxConstant(Integer.valueOf(number.getValue()));
-            PL0Parser.writer.pushEax();
+            writer.movEaxConstant(Integer.valueOf(number.getValue()));
+            writer.pushEax();
         } else if (type == TokenType.OPEN_PARENTHESIS) {
             getAndAssertToken(TokenType.OPEN_PARENTHESIS);
-            PL0Parser.parseExpression(base, offset);
+            parseExpression(base, offset);
             getAndAssertToken(TokenType.CLOSE_PARENTHESIS);
         } else {
             LOG.error("Invalid option for factor: {}", scanner.getToken());
