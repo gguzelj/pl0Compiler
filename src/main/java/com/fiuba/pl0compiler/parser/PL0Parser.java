@@ -33,9 +33,10 @@ public class PL0Parser {
         factorParser = new FactorParser(scanner);
     }
 
-    public void parse(String file) {
+    public void parse(String file, String outputFile) {
         LOG.info("Parsing {}", file);
         scanner.setFileToScan(file);
+        writer.outputFile(outputFile);
 
         this.parseProgram();
     }

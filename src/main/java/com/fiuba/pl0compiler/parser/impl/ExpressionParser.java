@@ -4,7 +4,6 @@ import com.fiuba.pl0compiler.parser.PL0Parser;
 import com.fiuba.pl0compiler.scanner.Scanner;
 import com.fiuba.pl0compiler.scanner.Token;
 import com.fiuba.pl0compiler.scanner.TokenType;
-import com.sun.xml.internal.org.jvnet.mimepull.MIMEConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

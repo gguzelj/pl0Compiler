@@ -2,7 +2,6 @@ package com.fiuba.pl0compiler.internal;
 
 import com.fiuba.pl0compiler.parser.PL0Parser;
 import com.fiuba.pl0compiler.parser.ParserException;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import java.io.*;
 import java.util.*;
 
+import static java.util.Objects.nonNull;
+
 
 //objdump -D -M=intel programa
 //hexdump programa
@@ -16,26 +18,26 @@ public class Pl0Writer {
     private static final Logger LOG = LoggerFactory.getLogger(Pl0Writer.class);
     private static final String DEFAULT_OUTPUT_FILE = "./output";
 
-    private final FileOutputStream outputFile;
+    private FileOutputStream outputFile;
     private final List<Integer> code = new ArrayList<>();
     private final Map<TokenType, Integer> jumpMap = new HashMap<>();
 
     public Pl0Writer() {
-        this(DEFAULT_OUTPUT_FILE);
-    }
-
-    public Pl0Writer(String outputFile) {
-        this.outputFile = this.createFileOutputFile(outputFile);
-        this.code.addAll(this.readHeader());
-        this.code.addAll(Arrays.asList(0xbf, 0x00, 0x00, 0x00, 0x00));
-        //Guardamos en el registro EDI la dir. de memoria donde se alojan las variables
-
         this.jumpMap.put(TokenType.EQUAL, 0x74);
         this.jumpMap.put(TokenType.DISTINCT, 0x75);
         this.jumpMap.put(TokenType.LESS_THAN, 0x7C);
         this.jumpMap.put(TokenType.LESS_OR_EQUAL, 0x7E);
         this.jumpMap.put(TokenType.GREATER_THAN, 0x7F);
         this.jumpMap.put(TokenType.GREATER_OR_EQUAL, 0x7D);
+    }
+
+    public void outputFile(String outputFile) {
+        String file = nonNull(outputFile) ? outputFile : DEFAULT_OUTPUT_FILE;
+        LOG.info("Creating file {}", file);
+        this.outputFile = this.createFileOutputFile(file);
+        this.code.addAll(this.readHeader());
+        this.code.addAll(Arrays.asList(0xbf, 0x00, 0x00, 0x00, 0x00));
+        //Guardamos en el registro EDI la dir. de memoria donde se alojan las variables
     }
 
     public void flush() {

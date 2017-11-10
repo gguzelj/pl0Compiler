@@ -42,7 +42,7 @@ public class FactorParser extends AbstractParser {
             }
         } else if (type == TokenType.NUMBER) {
             Token number = getAndAssertToken(TokenType.NUMBER);
-            writer.movEaxConstant(Integer.valueOf(number.getValue()));
+            writer.movEaxConstant(this.parseInteger(number.getValue()));
             writer.pushEax();
         } else if (type == TokenType.OPEN_PARENTHESIS) {
             getAndAssertToken(TokenType.OPEN_PARENTHESIS);
@@ -53,6 +53,14 @@ public class FactorParser extends AbstractParser {
             throw new ParserException("Invalid option for factor: ");
         }
         LOG.debug("Parsing FACTOR END");
+    }
+
+    private Integer parseInteger(String value) {
+        try {
+            return Integer.valueOf(value);
+        } catch (NumberFormatException e) {
+            throw new ParserException("Hubo un error al leer el numero " +  value);
+        }
     }
 
 }

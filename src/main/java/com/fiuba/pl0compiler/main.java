@@ -14,22 +14,17 @@ public class main {
     private static final Logger LOG = LoggerFactory.getLogger(main.class);
 
     public static void main(String argv[]) throws IOException {
-/*
-        Pl0Writer pl0Writer = new Pl0Writer();
+        if (argv.length != 1 && argv.length != 2) {
+            LOG.error("Indique el archivo PL0 a parsear: \n java -jar ./pl0parser \"inputFile.pl0\" \"outputfile\"");
+            return;
+        }
 
-        PL0Parser.writer.popEax();
-        PL0Parser.writer.pushEax();
-        PL0Parser.writer.flush();
-*/
-
-
-
-        parse("/home/german/workspace/pl0Compiler/src/main/resources/pl0_examples/test.PL0");
-
+        try {
+            PL0Parser pl0Parser = new PL0Parser();
+            pl0Parser.parse(argv[0], argv.length == 2 ? argv[1] : null);
+        } catch (Exception e) {
+            LOG.error("Corrija los problemas indicados antes de volver a compilar");
+        }
     }
 
-    private static void parse(String file) throws FileNotFoundException {
-        PL0Parser pl0Parser = new PL0Parser();
-        pl0Parser.parse(file);
-    }
 }
