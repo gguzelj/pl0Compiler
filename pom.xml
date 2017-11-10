@@ -43,6 +43,7 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>2.4</version>
                 <configuration>
+                    <finalName>pl0-parser</finalName>
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
